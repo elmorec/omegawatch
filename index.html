@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>The Watch</title>
+  <style>
+    @media screen and (max-width:359px) {
+      html {
+        font-size: 12px;
+      }
+    }
+    @media screen and (min-width:360px) and (max-width:419px) {
+      html {
+        font-size: 14px;
+      }
+    }
+    @media screen and (min-width:420px) and (max-width:639px) {
+      html {
+        font-size: 16px;
+      }
+    }
+    @media screen and (min-width:640px) {
+      html {
+        font-size: 22px;
+      }
+    }
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .control {
+      margin-top: 1rem;
+      text-align: center;
+      letter-spacing: 2px;
+      font-size: 1.6rem;
+      font-family: impact;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    .control .label {
+      display: inline-block;
+      visibility: hidden;
+      margin-bottom: -.5em;
+      padding: 1.2rem .2rem 1rem;
+      border: .3rem solid black;
+      border-radius: 2rem 2rem 0 0;
+      font-weight: bold;
+      line-height: 1;
+      background-color: #d9e9f3;
+    }
+    .control .fps-text {
+      display: block;
+      padding-top: .5rem;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <header class="control">
+    <div class="label"><span class="fps">60</span><small class="fps-text">FPS</small></div>
+  </header>
+  <div id="watch"></div>
+</div>
+<script>
+"use strict";var _createClass=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}!function(e){var a=function(){function n(e){var t=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{};if(_classCallCheck(this,n),e)return this.size=800,this._cache={},this._instance=null,this.renderers=this.createRender(),this._ctx=this.getCache().ctx,this._ctx.canvas.style.maxWidth="100%",this.renderers.dial(this.getCache("dial").ctx),this.renderers.dot(this.getCache("dot").ctx),this.renderers.mask(this.getCache("mask").ctx),e.appendChild(this._ctx.canvas),this.setFPS(t.fps)}return _createClass(n,[{key:"update",value:function(){var e=this._ctx,t=this._cache,n=this.size/2;e.drawImage(t.dial,-n,-n),this.renderers.hands(this._ctx,this.fps),e.drawImage(t.dot,-n,-n),e.drawImage(t.mask,-n,-n)}},{key:"getCache",value:function(e){if(!this._cache[e]){var t=document.createElement("canvas");t.width=t.height=this.size;var n=t.getContext("2d");if(n.translate(this.size/2,this.size/2),n.lineCap="round",n.lineJoin="round",n.textBaseline="middle",n.textAlign="center",t.ctx=n,!e)return t;this._cache[e]=t}return this._cache[e]}},{key:"createRender",value:function(){var s=Math.PI,o=function(e){return Math.sin(2*e*s/360)},l=function(e){return Math.cos(2*e*s/360)},c=Math.sqrt(2),h=this.size/2,u=10,d=100,f=h-20,v=h-20-10,g=v-12-d/2,k=50,y=2*h/k,b="The Watch",m=.38*-h,p=40,i=2,a=.8*h,r="red",C=10,x=.86*h,_="black",S=10,w=.6*h,T="black",P="#f0f0f0",I="#e0e0e0",W="black",z="black",E="black",t=16,e=new Date,M={second:6*e.getSeconds(),minute:6*e.getMinutes(),hour:30*e.getHours()};return{dial:function(e){e.save(),e.fillStyle=P,e.arc(0,0,h,0,2*s),e.fill(),e.globalCompositeOperation="source-atop",e.strokeStyle=I;for(var t=0;t<k*c;t++){var n=t*y-h*c;e.beginPath(),e.moveTo(-h+n,-h),e.lineTo(h+n,h),e.stroke(),e.beginPath(),e.moveTo(-h+n,h),e.lineTo(h+n,-h),e.stroke(),t++}e.restore(),e.save(),e.lineWidth=u,e.strokeStyle=W,e.beginPath(),e.arc(0,0,h-u/2,0,2*s),e.stroke(),e.font=d+"px cursive",e.fillStyle=z,e.strokeStyle=E;for(var i=0;i<60;i++){var a=o(6*i),r=-l(6*i);e.beginPath(),e.moveTo(a*f,r*f),e.lineTo(a*v,r*v),i%5==0?(e.fillText(i/5||12,a*g,r*g),e.lineWidth=8,e.stroke(),e.lineWidth=3):e.stroke()}e.font=p+"px cursive",e.fillStyle="black",e.fillText(b,0,m),e.restore()},hands:function(e,t){var n=6/t;q(e,M.hour,w,S,T),q(e,M.minute,x,C,_),q(e,M.second,a,i,r),M.second+=n,M.minute+=n/60,M.hour+=n/3600},dot:function(e){e.save(),e.fillStyle="#fff",e.beginPath(),e.arc(0,0,t,0,2*s),e.fill(),e.lineWidth=C,e.stroke(),e.restore()},mask:function(e){e.save();var t=e.createRadialGradient(0,0,0,0,0,h);t.addColorStop(0,"rgba(255, 255, 255, 0)"),t.addColorStop(.6,"rgba(255, 255, 255, 0)"),t.addColorStop(1,"rgb(135, 206, 250, .3)"),e.fillStyle=t,e.beginPath(),e.arc(0,0,h,0,2*s),e.fill(),e.restore()}};function q(e,t,n){var i=3<arguments.length&&void 0!==arguments[3]?arguments[3]:4,a=4<arguments.length&&void 0!==arguments[4]?arguments[4]:"",r=o(t),s=-l(t);e.save(),e.lineWidth=i,e.strokeStyle=a,e.beginPath(),e.moveTo(r*h/-6,s*h/-6),e.lineTo(r*n,s*n),e.stroke(),e.restore()}}},{key:"stop",value:function(){return clearInterval(this._instance),this._instance=null,this}},{key:"start",value:function(){return null!==this._instance?console.warn("Watch is already running."):(this.update(),this._instance=setInterval(this.update.bind(this),~~(1e3/this.fps))),this}},{key:"setFPS",value:function(e){return this.fps=0<e&&e<60?e:60,this.stop().start()}}]),n}();window.addEventListener("load",function(){var e=new a(document.getElementById("watch")),t=[1,12,60],n=document.querySelector(".label"),i=n.querySelector(".fps");n.style.visibility="visible",n.addEventListener("click",function(){e.setFPS(t[0]),i.innerHTML=t[0],t.push(t.shift())})})}();
+</script>
+</body>
+</html>
